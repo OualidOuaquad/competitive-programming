@@ -1,0 +1,40 @@
+def readfile(path):
+    with open(path,'r') as file:
+        Lines = file.readlines()
+    Lines = [s.replace('\n', '') for s in Lines]
+    biglist=[]
+    for line in Lines:
+        templist=line.split(" ")
+        biglist.append(templist)
+    return biglist
+datalist=readfile("b_read_on.txt")
+nbTotalOfBooks=int(datalist[0][0])
+nbOfLibraries=int(datalist[0][1])
+dayForScanning=int(datalist[0][2])
+scoring=datalist[1]
+libraries=datalist[2:]
+i=0
+listFavorableLib=[]
+while(i<int(nbOfLibraries)*2):
+    books=int(libraries[i][0])
+    signup=int(libraries[i][1])
+    bookPerDay=int(libraries[i][2])
+    potential=(dayForScanning-signup)*bookPerDay
+    empthyDay=(potential-books)/bookPerDay
+    listFavorableLib.append(empthyDay)
+    i=i+2
+
+indexfavlib=sorted(range(len(listFavorableLib)), key=lambda k: listFavorableLib[k])
+
+doubleindexfavlib=[s*2 for s in indexfavlib]
+totalofday=0
+s=0
+while(s<len(doubleindexfavlib)):
+    totalofday=int(totalofday)+int(libraries[doubleindexfavlib[s]][1])
+    if(int(totalofday)>int(dayForScanning)):
+        break
+    s = s + 1
+doubleindexfavlib = doubleindexfavlib[:s]
+indexfavlib=[int(s/2) for s in doubleindexfavlib]
+
+print(indexfavlib)
